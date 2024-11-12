@@ -1,8 +1,27 @@
 body {
     margin: 0px;
+    font-family: "Roboto";
 }
 
 img {
     display: block;
     max-width: 100%;
+}
+
+label, input {
+    display: block;
+}
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+h1, h2, h3, h4, p {
+    margin: 0px;
+}
+a {
+    text-decoration: none;
+    background-color: inherit;
 }

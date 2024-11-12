@@ -1,3 +1,11 @@
+.page_container {
+   display: grid;
+   align-items: center;
+   justify-content: center;
+}
+.login_page {
+    width: 400px;
+}
 .login_container {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -9,4 +17,53 @@
     object-fit: cover;
     width: 100%;
     border-radius: 20px;
+}
+.login_titulo {
+    font-family: "Poppins";
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.label_login {
+    font-family: "Roboto";
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 1.15rem;
+}
+.input_login {
+    font-family: "Roboto";
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #F7F7F7;
+    border: none;
+}
+.btn_login {
+    font-family: "Poppins";
+    font-size: 1.25rem;
+    background: var(--corAzul);
+    border-radius: 4px;
+    color: var(--branco);
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 3px 0;
+}
+
+.login_register {
+    display: inline-block;
+    font-weight: 500;
+    color: inherit;
+    padding: 5px;
+}
+.formulario_login{
+    margin-bottom: 15px;
+    display: grid;
+    gap: 20px;
+}
+
+.login_page p {
+ text-align: center;
 }
