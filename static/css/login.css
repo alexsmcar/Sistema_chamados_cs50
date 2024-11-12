@@ -34,7 +34,7 @@
     font-family: "Roboto";
     font-size: 1rem;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 10px;
     width: 100%;
     box-sizing: border-box;
     background-color: #F7F7F7;
@@ -43,8 +43,8 @@
 .btn_login {
     font-family: "Poppins";
     font-size: 1.25rem;
-    background: var(--corAzul);
-    border-radius: 4px;
+    background: var(--pretoSidebar);
+    border-radius: 10px;
     color: var(--branco);
     display: block;
     text-align: center;

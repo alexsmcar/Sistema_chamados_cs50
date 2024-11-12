@@ -1,0 +1,84 @@
+.conteudo_header {
+    height: 150px;
+}
+.dashboard_container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+}
+
+.cabecalho {
+    width: 250px;
+    height: 100%;
+    background-color: black;
+    grid-row: span 2;
+}
+
+.navegacao_principal {
+    color: var(--branco);
+
+}
+.logo_container {
+    height: 150px;
+    background-color: #D9D9D9;
+}
+
+.nav_links {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 40px;
+}
+.nav_links li a {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.dashboard_content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+
+}
+.dashboard_info h2,
+.dashboard_info span {
+    font-family: "Poppins";
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--branco);
+}
+.dashboard_info span {
+    justify-self: end;
+}
+
+.dashboard_info {
+    display: grid;
+    padding: 30px;
+    gap: 30px;
+    border-radius: 10px;
+}
+
+.dash_total {
+    background: #717171;
+}
+
+.dash_aberto {
+    background: var(--verde);
+}
+
+.dash_andamento {
+    background: var(--amarelo);
+}
+
+.dash_finalizado {
+    background: var(--vermelho);
+}
+
+.footer {
+    background: var(--cinzaFooter);
+    height: max-content;
+    padding: 12px 16px;
+}
