@@ -1,3 +1,7 @@
+.conteudo_principal,
+.conteudo_header {
+    padding: 0 15px;
+}
 .conteudo_header {
     height: 150px;
 }

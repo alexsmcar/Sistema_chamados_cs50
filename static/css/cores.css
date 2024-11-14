@@ -1,9 +1,11 @@
 :root {
-    --corAzul: #1770FF;
+    --azul: #1770FF;
+    --azulClaro: #D1E6FF;
     --branco: #ffffff;
     --pretoSidebar: #0D0E12;
     --cinzaFooter : #DBDFE9;
     --verde: #17C653;
     --amarelo: #F6C000;
     --vermelho: #F8285A;
+    --cinzaBorda: #B2B2B2;
 }
