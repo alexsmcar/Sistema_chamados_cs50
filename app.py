@@ -17,7 +17,7 @@ def cadastrar():
 
 @app.route("/chamados")
 def chamados():
-    return render_template("chamados.html")
+    return render_template("chamados2.html")
 
 @app.route("/clientes")
 def clientes():

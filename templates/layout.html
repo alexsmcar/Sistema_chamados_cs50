@@ -15,22 +15,19 @@
             <div class="logo_container"></div>
             <nav class="navegacao_principal">
                 <ul class="nav_links">
-                    <li><a href="./dashboard.html"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
-                    <li><a href="./chamados.html"><img src="../static/img/icon/chamado.svg" width="20px" height="20px">Chamados</a></li>
-                    <li><a href="./clientes.html"><img src="../static/img/icon/clientes.svg" width="20px" height="20px">Clientes</a></li>
+                    <li><a href="/dashboard"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
+                    <li><a href="/chamados"><img src="../static/img/icon/chamado.svg" width="20px" height="20px">Chamados</a></li>
+                    <li><a href="/clientes"><img src="../static/img/icon/clientes.svg" width="20px" height="20px">Clientes</a></li>
                 </ul>
             </nav>
 
         </header>
         <main>
-            <section class="conteudo_header">
-                {% block header %}
-                {% endblock %}
-            </section>
+            {% block header %}
+            {% endblock %}
             <section class="conteudo_principal">
                 {% block principal %}
                 {% endblock %}
-               
             </section>
 
         </main>
