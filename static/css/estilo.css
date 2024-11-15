@@ -12,6 +12,10 @@ label, input {
     display: block;
 }
 
+select {
+    cursor: pointer;
+}
+
 button {
     background: none;
     border: none;

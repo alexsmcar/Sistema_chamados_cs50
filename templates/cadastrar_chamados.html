@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="dashboard_container">
+        <header class="cabecalho">
+            <div class="logo_container"></div>
+            <nav class="navegacao_principal">
+                <ul class="nav_links">
+                    <li><a href="./dashboard.html"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
+                    <li><a href="./chamados.html"><img src="../static/img/icon/chamado.svg" width="20px" height="20px">Chamados</a></li>
+                    <li><a href="./clientes.html"><img src="../static/img/icon/clientes.svg" width="20px" height="20px">Clientes</a></li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="conteudo_header  wid_cad"></section>
+            <section class="conteudo_principal  wid_cad">
+                <div class="cadastrar_chamado_content">
+                    <form class="form_cad_chamado">
+                        <div class="form_cad">
+                            <div class="sub_col2">
+                                <div>
+                                    <label for="cod_chamado">Cod</label>
+                                    <input disabled type="text" id="cod_chamado" name="cod">
+                                </div>
+                                <div>
+                                    <label for="entrada_chamado">Entrada</label>
+                                    <input type="text" id="entrada_chamado" name="entrada">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="saida_chamado">Saída</label>
+                                <input type="text" id="saida_chamado" name="saida">
+                            </div>
+                            <div>
+                                <label for="cliente_chamado">Cliente</label>
+                                <input type="text" id="cliente_chamado" name="cliente">
+                            </div>
+                            <div>
+                                <label for="status_chamado">Status</label>
+                                <select id="status_chamado" name="status_chamado">
+                                    <option>Aberto</option>
+                                    <option>Em andamento</option>
+                                    <option>Fechado</option>
+                                </select>
+                            </div>
+                            <div class="col2">
+                                <label for="titulo_chamado">Título</label>
+                                <input type="text" id="titulo_chamado" name="titulo">
+                            </div>
+                            <div>
+                                <label for="desc_chamado">Descrição</label>
+                                <textarea id="desc_chamado" name="descricao" rows="6">
+                                </textarea>
+                            </div>
+                            <div>
+                                <label for="solucao_chamado">Solução</label>
+                                <textarea id="solucao_chamado" name="solucao" rows="6">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="btn_save_conteiner">
+                            <button class="btn_save"><img src="../static/img/icon/salvar.svg">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+
+        </main>
+        <footer class="footer">
+            <p>2024© Alexsandro Carvalho</p>
+        </footer>
+    </div>
+    
+</body>
+</html>

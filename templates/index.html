@@ -17,7 +17,7 @@
         <main class="page_container">
             <div class="login_page">
                 <h1 class="login_titulo">Entrar</h1>
-                <form class="formulario_login">
+                <form action="/dashboard" method="get" class="formulario_login">
                     <div>
                         <label class="label_login" for="log_email">Email</label>
                         <input class="input_login" type="text" id="log_email" name="email" placeholder="exemplo@dominio.com
@@ -28,9 +28,9 @@
                         <input class="input_login" type="password" id="log_senha" name="senha" placeholder="Senha
                         ">
                     </div>
-                    <button class="btn_login">Entrar</button>
+                    <button type="submit" class="btn_login">Entrar</button>
                 </form>
-                <p>Ainda não possui conta? <a class="login_register" href="./cadastrar.html">Cadastre-se</a></p>
+                <p>Ainda não possui conta? <a class="login_register" href="/cadastrar">Cadastre-se</a></p>
             </div>
         </main>
     </div>
