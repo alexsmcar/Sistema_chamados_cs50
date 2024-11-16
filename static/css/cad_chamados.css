@@ -58,4 +58,5 @@
 .btn_save_conteiner {
     display: flex;
     justify-content: end;
+    padding: 0 40px;
 }
