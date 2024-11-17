@@ -1,7 +1,10 @@
 import sqlite3
+from datetime import datetime
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
+
+USER = 1
 
 def opendb():
     connection = sqlite3.connect("sistema_chamados.db")
@@ -11,31 +14,14 @@ def opendb():
 def closedb(connection):
     connection.close()
 
-@app.route("/", methods = ["GET", "POST"])
+@app.route("/")
 def index():
-    if request.method == "POST":
-        email = request.form.get("email")
-        senha = request.form.get("senha")
-        if not email or not senha:
-            return redirect("/")
-        db = opendb()
-        cursor = db.cursor()
-        cursor.execute("SELECT id FROM usuarios WHERE email = ? AND senha = ?",(email, senha))
-        id = cursor.fetchone()
-        if not id:
-            return redirect("/")
-        else:
-            print("okay")
-            dados = cursor.execute("SELECT status FROM chamados WHERE usuario_id = ?",(id))
-            return render_template("dashboard.html")
+    return render_template("dashboard.html")
 
-    
-    return render_template("index.html")
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+        return render_template("login.html")
 
-@app.route("/dashboard", methods = ["POST"])
-def dashboard():
-    if request.method == "POST":
-        return render_template("dashboard.html")
 
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastrar():
@@ -44,9 +30,9 @@ def cadastrar():
         senha = request.form.get("senha")
         confirmar = request.form.get("confirmar")
         if not email or not senha or not confirmar:
-            return redirect("/")
+            return redirect("/cadastrar")
         elif senha != confirmar:
-            return redirect("/")
+            return redirect("/cadastrar")
         db = opendb()
         cursor = db.cursor()
         cursor.execute("INSERT INTO usuarios (email, password, confirm_pass) values(?,?,?)", (email, senha, confirmar))
@@ -63,13 +49,52 @@ def chamados():
 def clientes():
     return render_template("clientes.html")
 
-@app.route("/cadastrar_clientes")
+@app.route("/cadastrar_clientes", methods = ["GET", "POST"])
 def cadClientes():
+    if request.method == "POST":
+        cpf_cnpj = request.form.get("registro")
+        nome = request.form.get("nome")
+        telefone = request.form.get("telefone")
+        logradouro = request.form.get("logradouro")
+        numero = request.form.get("numero")
+        bairro = request.form.get("bairro")
+        complemento = request.form.get("complemento")
+        cidade = request.form.get("cidade")
+        uf = request.form.get("uf")
+        cep = request.form.get("cep")
+        checkElements = [cpf_cnpj, nome, telefone, logradouro, bairro, cidade, uf,]
+        for element in checkElements:
+            if not element:
+                return redirect("/cadastrar_clientes")
+        db = opendb()
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO clientes (nome, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?)",(nome, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
+        db.commit()
+        closedb(db)
+        return redirect("/chamados")
     return render_template("cadastrar_clientes.html")
 
-@app.route("/cadastrar_chamados")
+@app.route("/cadastrar_chamados", methods = ["POST", "GET"])
 def cadChamados():
-    return render_template("cadastrar_chamados.html")
+    db = opendb()
+    cursor = db.cursor()
+    entrada = datetime.now()
+    entrada = entrada.strftime("%d/%m/%Y %X")
+    if request.method == "POST":
+        entrada_form = request.form.get("entrada")
+        saida_form = request.form.get("saida")
+        cliente = request.form.get("cliente")
+        situacao = request.form.get("situacao")
+        descricao = request.form.get("descricao")
+        defeitos = request.form.get("defeitos")
+        solucao = request.form.get("solucao")
+        checkElements = [entrada_form, cliente, situacao, descricao, defeitos]
+        for element in checkElements:
+            if  not element:
+                return redirect("/cadastrar_chamados")
+        return redirect("/chamados")
+
+    return render_template("cadastrar_chamados.html", entrada=entrada)
 
 
 
