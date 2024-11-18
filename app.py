@@ -43,7 +43,11 @@ def cadastrar():
 
 @app.route("/chamados")
 def chamados():
-    return render_template("chamados.html")
+    db = opendb()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, cliente, descricao, status, emissao FROM chamados WHERE usuario_id = ?", (USER,))
+    chamados = cursor.fetchall()
+    return render_template("chamados.html", chamados=chamados)
 
 @app.route("/clientes")
 def clientes():
@@ -68,10 +72,10 @@ def cadClientes():
                 return redirect("/cadastrar_clientes")
         db = opendb()
         cursor = db.cursor()
-        cursor.execute("INSERT INTO clientes (nome, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?)",(nome, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
+        cursor.execute("INSERT INTO clientes (nome, usuario_id, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(nome, USER, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
         db.commit()
         closedb(db)
-        return redirect("/chamados")
+        return redirect("/clientes")
     return render_template("cadastrar_clientes.html")
 
 @app.route("/cadastrar_chamados", methods = ["POST", "GET"])
@@ -90,11 +94,15 @@ def cadChamados():
         solucao = request.form.get("solucao")
         checkElements = [entrada_form, cliente, situacao, descricao, defeitos]
         for element in checkElements:
-            if  not element:
+            if not element:
                 return redirect("/cadastrar_chamados")
+        cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (USER, cliente, situacao, defeitos, entrada_form, saida_form, descricao, solucao))
         return redirect("/chamados")
-
-    return render_template("cadastrar_chamados.html", entrada=entrada)
+    
+    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
+    clientes = cursor.fetchall()
+    closedb(db)
+    return render_template("cadastrar_chamados.html", entrada=entrada, clientes=clientes)
 
 
 

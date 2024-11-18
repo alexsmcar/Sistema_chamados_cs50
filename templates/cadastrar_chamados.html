@@ -24,10 +24,12 @@
                 </div>
                 <div>
                     <label for="cliente_chamado">Cliente</label>
-                    <select id="cliente_chamado" name="cliente"></select>
-                    {% for }
-                    
-                    <input type="text" id="cliente_chamado" name="cliente">
+                    <select id="cliente_chamado" name="cliente">
+                        <option disabled selected>Selecione</option>
+                        {% for cliente in clientes %}
+                            <option value="{{cliente['id']}}">{{cliente["nome"]}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div>
                     <label for="status_chamado">Situação</label>
@@ -38,12 +40,12 @@
                     </select>
                 </div>
                 <div class="col2">
-                    <label for="des_chamado">Descricao</label>
-                    <input type="text" id="desc_chamado" name="descricao">
+                    <label for="desc_chamado">Descricao</label>
+                    <input type="text" id="desc_chamado" name="titulo">
                 </div>
                 <div>
                     <label for="def_chamado">Defeitos</label>
-                    <textarea id="def_chamado" name="defeitos" rows="6">
+                    <textarea id="def_chamado" name="descricao" rows="6">
                     </textarea>
                 </div>
                 <div>
