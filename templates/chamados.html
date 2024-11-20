@@ -30,21 +30,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>249</td>
-                    <td>Totvs S.A Joinville</td>
-                    <td>Suporte a software</td>
-                    <td>Em andamento</td>
-                    <td>09/11/2024 12:00</td>
-                    <td class="btn_editar"><a href="cadastrar_chamado.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
-                </tr>
+                {% for chamado in chamados %}
+                    <tr>
+                        <td>{{ chamado["id"] }}</td>
+                        <td>{{ chamado["nome"] }}</td>
+                        <td>{{ chamado["descricao"] }}</td>
+                        <td>{{ chamado["status"] }}</td>
+                        <td>{{ chamado["emissao"] }}</td>
+                        <td class="btn_editar"><a href="cadastrar_chamado.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
         <div class="nav_tabela_content">
-            <div class="nav_tabela">
-                <button class="anterior">Anterior</button>
-                <button class="proximo">Próximo</button>
-            </div>
+            <ul class="nav_tabela">
+                <li><a href="/chamados?pagina={% if page > 1 %}{{ page - 1 }}{% else %}{{ page }}{% endif %}" class="anterior">Anterior</a></li>
+                {% for page in range(total_pages["total"]) %}
+                    <li><a href="/chamados?pagina={{ page + 1 }}">{{ page + 1 }}</a></li>
+                {% endfor %}
+                <li><a href="/chamados?pagina={% if (page + 1) <= total_pages['total'] %}{{ page + 1 }}{% else %}{{total_pages['total']}}{% endif %}" class="proximo">Próximo</a></li>
+            </ul>
         </div>
     </div>
 {% endblock %}

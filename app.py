@@ -16,7 +16,11 @@ def closedb(connection):
 
 @app.route("/")
 def index():
-    return render_template("dashboard.html")
+    db = opendb()
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(status) AS total, COUNT(CASE WHEN status = 'aberto' THEN 1 END) AS aberto, COUNT(CASE WHEN status = 'em andamento' THEN 1 END) AS em_andamento, COUNT(CASE WHEN status = 'finalizado' THEN 1 END) AS finalizado FROM chamados WHERE usuario_id = ?", (USER,))
+    dashboard = cursor.fetchone()
+    return render_template("dashboard.html", dashboard=dashboard)
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
@@ -45,9 +49,15 @@ def cadastrar():
 def chamados():
     db = opendb()
     cursor = db.cursor()
-    cursor.execute("SELECT id, cliente, descricao, status, emissao FROM chamados WHERE usuario_id = ?", (USER,))
+    page = request.args.get("pagina", 1, type=int)
+    per_page = 5
+    offset = (page - 1) * 5
+    cursor.execute("SELECT COUNT(*) as total FROM chamados WHERE usuario_id = ?", (USER,))
+    total_pages = cursor.fetchone() 
+    cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? LIMIT ? OFFSET ?", (USER, per_page, offset))
     chamados = cursor.fetchall()
-    return render_template("chamados.html", chamados=chamados)
+    closedb(db)
+    return render_template("chamados.html", chamados=chamados, page=page, total_pages=total_pages)
 
 @app.route("/clientes")
 def clientes():
@@ -83,7 +93,7 @@ def cadChamados():
     db = opendb()
     cursor = db.cursor()
     entrada = datetime.now()
-    entrada = entrada.strftime("%d/%m/%Y %X")
+    entrada = entrada.strftime("%Y-%m-%dT%H:%M:%S")
     if request.method == "POST":
         entrada_form = request.form.get("entrada")
         saida_form = request.form.get("saida")
@@ -97,6 +107,7 @@ def cadChamados():
             if not element:
                 return redirect("/cadastrar_chamados")
         cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (USER, cliente, situacao, defeitos, entrada_form, saida_form, descricao, solucao))
+        db.commit()
         return redirect("/chamados")
     
     cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))

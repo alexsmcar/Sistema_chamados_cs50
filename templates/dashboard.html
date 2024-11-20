@@ -7,19 +7,19 @@
     <div class="dashboard_content">
         <div class="dashboard_info dash_total">
             <h2>Total de chamados</h2>
-            <span>10</span>
+            <span>{{ dashboard["total"]}}</span>
         </div>
         <div class="dashboard_info dash_aberto">
             <h2>Abertos</h2>
-            <span>5</span>
+            <span>{{ dashboard["aberto"]}}</span>
         </div>
         <div class="dashboard_info dash_andamento">
             <h2>Em Andamento</h2>
-            <span>3</span>
+            <span>{{ dashboard["em_andamento"]}}</span>
         </div>
         <div class="dashboard_info dash_finalizado">
             <h2>Finalizados</h2>
-            <span>2</span>
+            <span>{{ dashboard["finalizado"]}}</span>
         </div>
     </div>
 {% endblock %}
