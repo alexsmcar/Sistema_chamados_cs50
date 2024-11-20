@@ -31,14 +31,19 @@
 .nav_links {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
     padding: 40px;
 }
 .nav_links li a {
     display: flex;
     gap: 15px;
+    padding: 5px 12px;
     align-items: center;
 }
+.nav_links li {
+    width: max-content;
+}
+
 .dashboard_content {
     display: grid;
     grid-template-columns: 1fr 1fr;

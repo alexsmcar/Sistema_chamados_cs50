@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <section class="conteudo_header wid_cad"></section>
+{% endblock %}
+
+{% block principal %}
+    <div class="cadastrar_cliente_content">
+        <form action="/cadastrar_clientes" method="post" class="form_cad_chamado">
+            <div class="form_cad">
+                <div class="sub_col2">
+                    <div>
+                        <label for="cod_cliente">Cod</label>
+                        <input disabled type="text" id="cod_cliente" name="cod">
+                    </div>
+                    <div>
+                        <label for="registro_cliente">CPF/CNPJ</label>
+                        <input type="text" id="registro_cliente" name="registro">
+                    </div>
+                </div>
+                <div>
+                    <label for="nome_cliente">Nome</label>
+                    <input type="text" id="nome_cliente" name="nome">
+                </div>
+                <div>
+                    <label for="tel_cliente">Telefone</label>
+                    <input type="text" id="tel_cliente" name="telefone">
+                </div>
+                <div>
+                    <label for="logradouro_cliente">Logradouro</label>
+                    <input type="text" id="logradouro_cliente" name="logradouro">
+                </div>
+                <div class="sub_col2">
+                    <div>
+                        <label for="numero_cliente">Número</label>
+                        <input type="text" id="numero_cliente" name="numero">
+                    </div>
+                    <div>
+                        <label for="bairro_cliente">Bairro</label>
+                        <input type="text" id="bairro_cliente" name="bairro">
+                    </div>
+                </div>
+                <div>
+                    <label for="complemento_cliente">Complemento</label>
+                    <input type="text" id="complemento_cliente" name="complemento">
+                </div>
+                <div>
+                    <label for="cidade_cliente">Cidade</label>
+                    <input type="text" id="cidade_cliente" name="cidade">
+                </div>
+                <div class="sub_col2">
+                    <div>
+                        <label for="uf_cliente">UF</label>
+                        <input type="text" id="uf_cliente" name="uf">
+                    </div>
+                    <div>
+                        <label for="cep_cliente">CEP</label>
+                        <input type="text" id="cep_cliente" name="cep">
+                    </div>
+                </div>
+            </div>
+            <div class="btn_save_conteiner">
+                <button class="btn_save"><img src="../static/img/icon/salvar.svg">Salvar</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

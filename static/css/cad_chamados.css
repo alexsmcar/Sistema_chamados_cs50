@@ -1,0 +1,62 @@
+.wid_cad {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.col2 {
+    grid-column: 1/-1;
+}
+
+.sub_col2 {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 30px;
+}
+
+.form_cad label {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form_cad input,
+.form_cad textarea,
+.form_cad select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 2px solid var(--cinzaBorda);
+    font-family: "Roboto";
+}
+
+.form_cad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:  15px 30px;
+}
+
+.form_cad {
+    padding: 30px 40px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.btn_save {
+    display: flex;
+    gap: 5px;
+    font-size: 1rem;
+    font-family: "Roboto";
+    font-weight: 500;
+    color: var(--branco);
+    background: var(--verde);
+    padding: 8px 16px;
+    border: 2px solid var(--cinzaBorda);
+    border-radius: 4px;
+}
+
+.btn_save_conteiner {
+    display: flex;
+    justify-content: end;
+    padding: 0 40px;
+}

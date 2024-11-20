@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <section class="conteudo_header wid_cad"></section>
+{% endblock %}
+
+{% block principal %}
+    <div class="cadastrar_chamado_content">
+        <form action="/cadastrar_chamados" method="post" class="form_cad_chamado">
+            <div class="form_cad">
+                <div class="sub_col2">
+                    <div>
+                        <label for="cod_chamado">Cod</label>
+                        <input disabled type="text" id="cod_chamado" name="cod">
+                    </div>
+                    <div>
+                        <label for="entrada_chamado">Entrada</label>
+                        <input type="datetime-local" id="entrada_chamado" name="entrada">
+                    </div>
+                </div>
+                <div>
+                    <label for="saida_chamado">Saída</label>
+                    <input type="datetime-local" id="saida_chamado" name="saida">
+                </div>
+                <div>
+                    <label for="cliente_chamado">Cliente</label>
+                    <select id="cliente_chamado" name="cliente">
+                        <option disabled selected>Selecione</option>
+                        {% for cliente in clientes %}
+                            <option value="{{cliente['id']}}">{{cliente["nome"]}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="status_chamado">Situação</label>
+                    <select id="status_chamado" name="situacao">
+                        {% for situacao in situacoes %}
+                            <option value="{{ situacao }}">{{ situacao }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col2">
+                    <label for="desc_chamado">Descricao</label>
+                    <input type="text" id="desc_chamado" name="descricao">
+                </div>
+                <div>
+                    <label for="def_chamado">Defeitos</label>
+                    <textarea id="def_chamado" name="defeitos" rows="6">
+                    </textarea>
+                </div>
+                <div>
+                    <label for="solucao_chamado">Solução</label>
+                    <textarea id="solucao_chamado" name="solucao" rows="6">
+                    </textarea>
+                </div>
+            </div>
+            <div class="btn_save_conteiner">
+                <button class="btn_save"><img src="../static/img/icon/salvar.svg">Salvar</button>
+            </div>
+        </form>
+    </div>      
+{% endblock %}

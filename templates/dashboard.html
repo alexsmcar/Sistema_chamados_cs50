@@ -1,56 +1,25 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <title>Document</title>
-</head>
-<body>
-    <div class="dashboard_container">
-        <header class="cabecalho">
-            <div class="logo_container"></div>
-            <nav class="navegacao_principal">
-                <ul class="nav_links">
-                    <li><a href="./dashboard.html"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
-                    <li><a href="./chamados.html"><img src="../static/img/icon/chamado.svg" width="20px" height="20px">Chamados</a></li>
-                    <li><a href="./clientes.html"><img src="../static/img/icon/clientes.svg" width="20px" height="20px">Clientes</a></li>
-                </ul>
-            </nav>
-
-        </header>
-        <main>
-            <section class="conteudo_header"></section>
-            <section class="conteudo_principal">
-                <div class="dashboard_content">
-                    <div class="dashboard_info dash_total">
-                        <h2>Total de chamados</h2>
-                        <span>10</span>
-                    </div>
-                    <div class="dashboard_info dash_aberto">
-                        <h2>Abertos</h2>
-                        <span>5</span>
-                    </div>
-                    <div class="dashboard_info dash_andamento">
-                        <h2>Em Andamento</h2>
-                        <span>3</span>
-                    </div>
-                    <div class="dashboard_info dash_finalizado">
-                        <h2>Finalizados</h2>
-                        <span>2</span>
-                    </div>
-                </div>
-
-            </section>
-
-        </main>
-        <footer class="footer">
-            <p>2024© Alexsandro Carvalho</p>
-        </footer>
+{% extends "layout.html" %}
+{% block header %}
+    <section class="conteudo_header">      
+    </section>
+{% endblock %}
+{% block principal %}
+    <div class="dashboard_content">
+        <div class="dashboard_info dash_total">
+            <h2>Total de chamados</h2>
+            <span>{{ dashboard["total"]}}</span>
+        </div>
+        <div class="dashboard_info dash_aberto">
+            <h2>Abertos</h2>
+            <span>{{ dashboard["aberto"]}}</span>
+        </div>
+        <div class="dashboard_info dash_andamento">
+            <h2>Em Andamento</h2>
+            <span>{{ dashboard["em_andamento"]}}</span>
+        </div>
+        <div class="dashboard_info dash_finalizado">
+            <h2>Finalizados</h2>
+            <span>{{ dashboard["finalizado"]}}</span>
+        </div>
     </div>
-    
-</body>
-</html>
+{% endblock %}
