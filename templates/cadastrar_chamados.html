@@ -15,7 +15,7 @@
                     </div>
                     <div>
                         <label for="entrada_chamado">Entrada</label>
-                        <input type="datetime-local" id="entrada_chamado" name="entrada" value="{{ entrada }}">
+                        <input type="datetime-local" id="entrada_chamado" name="entrada">
                     </div>
                 </div>
                 <div>
@@ -34,9 +34,9 @@
                 <div>
                     <label for="status_chamado">Situação</label>
                     <select id="status_chamado" name="situacao">
-                        <option value="aberto">Aberto</option>
-                        <option value="em andamento">Em andamento</option>
-                        <option value="finalizado">finalizado</option>
+                        {% for situacao in situacoes %}
+                            <option value="{{ situacao }}">{{ situacao }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col2">

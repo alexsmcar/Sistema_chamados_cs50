@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+import math
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -49,13 +50,16 @@ def cadastrar():
 def chamados():
     db = opendb()
     cursor = db.cursor()
+    pesquisa = request.args.get("pesquisa")
     page = request.args.get("pagina", 1, type=int)
-    per_page = 5
-    offset = (page - 1) * 5
-    cursor.execute("SELECT COUNT(*) as total FROM chamados WHERE usuario_id = ?", (USER,))
-    total_pages = cursor.fetchone() 
-    cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? LIMIT ? OFFSET ?", (USER, per_page, offset))
+    per_page = 3
+    offset = (page - 1) * 3
+    if pesquisa:
+        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND clientes.nome LIKE ? LIMIT ? OFFSET ?", (USER, "%"+pesquisa+"%", per_page, offset))
+    else:
+        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? LIMIT ? OFFSET ?", (USER, per_page, offset))
     chamados = cursor.fetchall()
+    total_pages = math.ceil(len(chamados) / per_page)
     closedb(db)
     return render_template("chamados.html", chamados=chamados, page=page, total_pages=total_pages)
 
@@ -92,28 +96,27 @@ def cadClientes():
 def cadChamados():
     db = opendb()
     cursor = db.cursor()
-    entrada = datetime.now()
-    entrada = entrada.strftime("%Y-%m-%dT%H:%M:%S")
+    situacoes = ["aberto", "em andamento", "finalizado"]
     if request.method == "POST":
-        entrada_form = request.form.get("entrada")
-        saida_form = request.form.get("saida")
+        entrada = request.form.get("entrada")
+        saida = request.form.get("saida")
         cliente = request.form.get("cliente")
         situacao = request.form.get("situacao")
         descricao = request.form.get("descricao")
         defeitos = request.form.get("defeitos")
         solucao = request.form.get("solucao")
-        checkElements = [entrada_form, cliente, situacao, descricao, defeitos]
+        checkElements = [entrada, cliente, situacao, descricao, defeitos]
         for element in checkElements:
             if not element:
                 return redirect("/cadastrar_chamados")
-        cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (USER, cliente, situacao, defeitos, entrada_form, saida_form, descricao, solucao))
+        cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (USER, cliente, situacao, defeitos, entrada, saida, descricao, solucao))
         db.commit()
         return redirect("/chamados")
     
     cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
     clientes = cursor.fetchall()
     closedb(db)
-    return render_template("cadastrar_chamados.html", entrada=entrada, clientes=clientes)
+    return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=situacoes)
 
 
 
