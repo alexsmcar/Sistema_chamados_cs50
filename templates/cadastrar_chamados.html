@@ -11,7 +11,7 @@
                 <div class="sub_col2">
                     <div>
                         <label for="cod_chamado">Cod</label>
-                        <input disabled type="text" id="cod_chamado" name="cod">
+                        <input disabled type="text" id="cod_chamado" name="cod" value="{{ chamado['id'] if chamado else ''}}">
                     </div>
                     <div>
                         <label for="entrada_chamado">Entrada</label>
@@ -27,7 +27,11 @@
                     <select id="cliente_chamado" name="cliente">
                         <option disabled selected>Selecione</option>
                         {% for cliente in clientes %}
+                            {% if chamado and chamado['id_cliente'] == cliente['id'] %}
+                            <option selected value="{{chamado['id_cliente']}}">{{chamado['nome_cliente']}}</option>
+                            {% else %}
                             <option value="{{cliente['id']}}">{{cliente["nome"]}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -35,22 +39,26 @@
                     <label for="status_chamado">Situação</label>
                     <select id="status_chamado" name="situacao">
                         {% for situacao in situacoes %}
-                            <option value="{{ situacao }}">{{ situacao }}</option>
+                            {% if chamado and chamado['status'] == situacao %}
+                                <option selected value="{{ chamado['status'] }}">{{ chamado['status'] | capitalize }}</option>
+                            {% else %}
+                                <option value="{{ situacao }}">{{ situacao | capitalize }}</option>
+                            {% endif %} 
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col2">
                     <label for="desc_chamado">Descricao</label>
-                    <input type="text" id="desc_chamado" name="descricao">
+                    <input type="text" id="desc_chamado" name="descricao" value="{{ chamado['descricao'] if chamado else '' }}">
                 </div>
                 <div>
                     <label for="def_chamado">Defeitos</label>
-                    <textarea id="def_chamado" name="defeitos" rows="6">
+                    <textarea id="def_chamado" name="defeitos" rows="6">{{ chamado['defeitos'] if chamado else ''}}
                     </textarea>
                 </div>
                 <div>
                     <label for="solucao_chamado">Solução</label>
-                    <textarea id="solucao_chamado" name="solucao" rows="6">
+                    <textarea id="solucao_chamado" name="solucao" rows="6">{{ chamado['solucao'] if chamado else ''}}
                     </textarea>
                 </div>
             </div>

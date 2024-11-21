@@ -1,11 +1,13 @@
 import sqlite3
 from datetime import datetime
 import math
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 
 app = Flask(__name__)
+app.secret_key = 'uma_chave_secreta'
 
 USER = 1
+SITUACOES = ["aberto", "em andamento", "finalizado"]
 
 def opendb():
     connection = sqlite3.connect("sistema_chamados.db")
@@ -53,13 +55,21 @@ def chamados():
     pesquisa = request.args.get("pesquisa")
     page = request.args.get("pagina", 1, type=int)
     per_page = 3
-    offset = (page - 1) * 3
-    if pesquisa:
-        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND clientes.nome LIKE ? LIMIT ? OFFSET ?", (USER, "%"+pesquisa+"%", per_page, offset))
-    else:
+    offset = (page - 1) * per_page
+    if not pesquisa:
+        cursor.execute("SELECT COUNT(*) as total FROM chamados WHERE usuario_id = ?", (USER,))
+        total_query = cursor.fetchone()
+        total_pages = total_query["total"]
         cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? LIMIT ? OFFSET ?", (USER, per_page, offset))
+
+    else:
+        cursor.execute("SELECT COUNT(*) as total FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND clientes.nome LIKE ?", (USER, "%"+pesquisa+"%"))
+        total_query = cursor.fetchone()
+        total_pages = total_query["total"]
+        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND clientes.nome LIKE ? LIMIT ? OFFSET ?", (USER, "%"+pesquisa+"%", per_page, offset))
+
     chamados = cursor.fetchall()
-    total_pages = math.ceil(len(chamados) / per_page)
+    total_pages = math.ceil((total_pages / per_page))
     closedb(db)
     return render_template("chamados.html", chamados=chamados, page=page, total_pages=total_pages)
 
@@ -96,7 +106,6 @@ def cadClientes():
 def cadChamados():
     db = opendb()
     cursor = db.cursor()
-    situacoes = ["aberto", "em andamento", "finalizado"]
     if request.method == "POST":
         entrada = request.form.get("entrada")
         saida = request.form.get("saida")
@@ -116,8 +125,19 @@ def cadChamados():
     cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
     clientes = cursor.fetchall()
     closedb(db)
-    return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=situacoes)
+    return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=SITUACOES)
 
+@app.route("/editar_chamado")
+def editar_chamado():
+    db = opendb()
+    cursor = db.cursor()
+    chamado_id = request.args.get("chamado")
+    cursor.execute("SELECT chamados.*, clientes.nome AS nome_cliente, clientes.id AS id_cliente FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.id = ? AND chamados.usuario_id = ?", (chamado_id, USER))
+    chamado = cursor.fetchone()
+    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
+    clientes = cursor.fetchall()
+    closedb(db)
+    return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes)
 
 
 if __name__ == "__main__":
