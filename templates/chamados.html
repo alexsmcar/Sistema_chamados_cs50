@@ -30,16 +30,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for chamado in chamados %}
+                {% if chamados|length == 0 %}
                     <tr>
-                        <td>{{ chamado["id"] }}</td>
-                        <td>{{ chamado["nome"] }}</td>
-                        <td>{{ chamado["descricao"] }}</td>
-                        <td>{{ chamado["status"] }}</td>
-                        <td>{{ chamado["emissao"] }}</td>
-                        <td class="btn_editar"><a href="cadastrar_chamado.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
+                        <td class="full_row" colspan="6">Nenhum chamado encontrado</td>
                     </tr>
-                {% endfor %}
+                {% else %}
+                    {% for chamado in chamados %}
+                        <tr>
+                            <td>{{ chamado["id"] }}</td>
+                            <td>{{ chamado["nome"] }}</td>
+                            <td>{{ chamado["descricao"] }}</td>
+                            <td>{{ chamado["status"] | capitalize }}</td>
+                            <td>{{ chamado["emissao"] }}</td>
+                            <td class="btn_editar"><a href="/editar_chamado?chamado={{ chamado['id'] }}"><img src="../static/img/icon/editar.svg">Editar</a></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
         <div class="nav_tabela_content">
