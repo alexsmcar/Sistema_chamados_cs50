@@ -71,7 +71,7 @@ def chamados():
     chamados = cursor.fetchall()
     total_pages = math.ceil((total_pages / per_page))
     closedb(db)
-    return render_template("chamados.html", chamados=chamados, page=page, total_pages=total_pages)
+    return render_template("chamados.html", chamados=chamados, page=page, total_pages=total_pages, pesquisa=pesquisa)
 
 @app.route("/clientes")
 def clientes():
@@ -118,26 +118,56 @@ def cadChamados():
         for element in checkElements:
             if not element:
                 return redirect("/cadastrar_chamados")
+        entrada = datetime.strptime(entrada, "%Y-%m-%dT%H:%M")
+        entrada = entrada.strftime("%d/%m/%Y %H:%M")
+        if saida:
+            saida = datetime.strptime(saida, "%Y-%m-%dT%H:%M")
+            saida = saida.strftime("%d/%m/%Y %H:%M")
         cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (USER, cliente, situacao, defeitos, entrada, saida, descricao, solucao))
         db.commit()
         return redirect("/chamados")
-    
+    action = "criar_chamado"
     cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
     clientes = cursor.fetchall()
     closedb(db)
-    return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=SITUACOES)
+    return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=SITUACOES, action=action)
 
-@app.route("/editar_chamado")
+@app.route("/editar_chamado", methods=["GET", "POST"])
 def editar_chamado():
     db = opendb()
     cursor = db.cursor()
+    if request.method == "POST":
+        id_chamado = request.form.get("cod")
+        entrada = request.form.get("entrada")
+        saida = request.form.get("saida")
+        cliente = request.form.get("cliente")
+        situacao = request.form.get("situacao")
+        descricao = request.form.get("descricao")
+        defeitos = request.form.get("defeitos")
+        solucao = request.form.get("solucao")
+        entrada = datetime.strptime(entrada, "%Y-%m-%dT%H:%M")
+        entrada = entrada.strftime("%d/%m/%Y %H:%M")
+        if saida:
+            saida = datetime.strptime(saida, "%Y-%m-%dT%H:%M")
+            saida = saida.strftime("%d/%m/%Y %H:%M")
+        cursor.execute("UPDATE chamados SET cliente_id = ?, status = ?, defeitos = ?, emissao = ?, encerramento = ?, descricao = ?, solucao = ? WHERE usuario_id = ?", (cliente, situacao, defeitos, entrada, saida, descricao, solucao, USER))
+        db.commit()
+        return redirect("/")
     chamado_id = request.args.get("chamado")
     cursor.execute("SELECT chamados.*, clientes.nome AS nome_cliente, clientes.id AS id_cliente FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.id = ? AND chamados.usuario_id = ?", (chamado_id, USER))
     chamado = cursor.fetchone()
+    entrada = chamado["emissao"]
+    entrada = datetime.strptime(entrada, "%d/%m/%Y %H:%M")
+    entrada = entrada.strftime("%Y-%m-%dT%H:%M")
+    saida = chamado["encerramento"]
+    if saida:
+        saida = datetime.strptime(chamado["encerramento"], "%d/%m/%Y %H:%M")
+        saida = saida.strftime("%Y-%m-%dT%H:%M")
+    action = "atualizar_chamado"
     cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (USER,))
     clientes = cursor.fetchall()
     closedb(db)
-    return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes)
+    return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes, entrada=entrada, saida=saida, action=action)
 
 
 if __name__ == "__main__":

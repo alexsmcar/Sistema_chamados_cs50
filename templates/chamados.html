@@ -50,11 +50,11 @@
         </table>
         <div class="nav_tabela_content">
             <ul class="nav_tabela">
-                <li><a href="/chamados?pagina={% if page > 1 %}{{ page - 1 }}{% else %}{{ page }}{% endif %}" class="anterior">Anterior</a></li>
+                <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{% if page > 1 %}{{ page - 1 }}{% else %}{{ page }}{% endif %}" class="anterior">Anterior</a></li>
                 {% for page in range(total_pages) %}
-                    <li><a href="/chamados?pagina={{ page + 1 }}">{{ page + 1 }}</a></li>
+                    <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{{ page + 1 }}">{{ page + 1 }}</a></li>
                 {% endfor %}
-                <li><a href="/chamados?pagina={% if (page + 1) <= total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
+                <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{% if (page + 1) <= total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
             </ul>
         </div>
     </div>

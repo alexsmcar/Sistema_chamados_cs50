@@ -6,7 +6,8 @@
 
 {% block principal %}
     <div class="cadastrar_chamado_content">
-        <form action="/cadastrar_chamados" method="post" class="form_cad_chamado">
+        <form action="{{ url_for('cadastrar_chamados') if action == 'criar_chamado' else url_for('editar_chamado') }}" method="post" class="form_cad_chamado">
+            <input type="hidden" name="action" value="{{ action }}">
             <div class="form_cad">
                 <div class="sub_col2">
                     <div>
@@ -15,12 +16,12 @@
                     </div>
                     <div>
                         <label for="entrada_chamado">Entrada</label>
-                        <input type="datetime-local" id="entrada_chamado" name="entrada">
+                        <input type="datetime-local" id="entrada_chamado" name="entrada" value="{% if chamado %}{{entrada}}{% endif %}">
                     </div>
                 </div>
                 <div>
                     <label for="saida_chamado">Saída</label>
-                    <input type="datetime-local" id="saida_chamado" name="saida">
+                    <input type="datetime-local" id="saida_chamado" name="saida" value="{% if chamado %}{{saida}}{% endif %}">
                 </div>
                 <div>
                     <label for="cliente_chamado">Cliente</label>
