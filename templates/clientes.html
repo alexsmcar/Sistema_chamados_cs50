@@ -1,18 +1,18 @@
 {% extends "layout.html" %}
 {% block header %}
-<section class="conteudo_header pesquisar_container"> 
-    <div class="campo_pesquisa">
-        <div>
-            <a class="btn_adicionar" href="/cadastrar_clientes">+ Adicionar</a>
-        </div>
-        <div>
-            <form class="formulario_pesquisar">
-                <input type="text" id="pesquisar_cliente" name="pesquisa" placeholder="Pesquisar">
-                <button><img src="../static/img/icon/pesquisar.svg"></button>
-            </form>
-        </div>
-    </div>    
-</section>
+    <section class="conteudo_header pesquisar_container"> 
+        <div class="campo_pesquisa">
+            <div>
+                <a class="btn_adicionar" href="/cadastrar_clientes">+ Adicionar</a>
+            </div>
+            <div>
+                <form action="/clientes" method="get" class="formulario_pesquisar">
+                    <input type="text" id="pesquisar_cliente" name="pesquisa" placeholder="Pesquisar">
+                    <button><img src="../static/img/icon/pesquisar.svg"></button>
+                </form>
+            </div>
+        </div>    
+    </section>
 {% endblock %}
 {% block principal %}
     <div class="tabela_content">
@@ -26,19 +26,30 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>125</td>
-                    <td>Totvs S.A Joinville</td>
-                    <td>41.718.697/0001-18</td>
-                    <td class="btn_editar"><a href="cadastrar_cliente.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
-                </tr>
+                {% if clientes|length == 0 %}
+                    <tr>
+                        <td class="full_row" colspan="6">Nenhum cliente encontrado</td>
+                    </tr>
+                {% else %}
+                    {% for cliente in clientes %}
+                        <tr>
+                            <td>{{ cliente["id"] }}</td>
+                            <td>{{ cliente["nome"] }}</td>
+                            <td>{{ cliente["cpf_cnpj"] }}</td>
+                            <td class="btn_editar"><a href="cadastrar_cliente.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
+                        </tr>
+                    {% endfor %}    
+                {% endif %}
             </tbody>
         </table>
         <div class="nav_tabela_content">
-            <div class="nav_tabela">
-                <button class="anterior">Anterior</button>
-                <button class="proximo">Próximo</button>
-            </div>
+            <ul class="nav_tabela">
+                <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{% if page > 1 %}{{ page - 1 }}{% else %}{{ page }}{% endif %}" class="anterior">Anterior</a></li>
+                {% for page in range(total_pages) %}
+                    <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{{ page + 1 }}">{{ page + 1 }}</a></li>
+                {% endfor %}
+                <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{% if (page + 1) <= total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
+            </ul>
         </div>
     </div>
 {% endblock %}

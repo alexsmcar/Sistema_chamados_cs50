@@ -54,7 +54,7 @@ def chamados():
     cursor = db.cursor()
     pesquisa = request.args.get("pesquisa")
     page = request.args.get("pagina", 1, type=int)
-    per_page = 3
+    per_page = 8
     offset = (page - 1) * per_page
     if not pesquisa:
         cursor.execute("SELECT COUNT(*) as total FROM chamados WHERE usuario_id = ?", (USER,))
@@ -75,7 +75,28 @@ def chamados():
 
 @app.route("/clientes")
 def clientes():
-    return render_template("clientes.html")
+    db = opendb()
+    cursor = db.cursor()
+    pesquisa = request.args.get("pesquisa")
+    page = request.args.get("pagina", 1, type=int)
+    per_page = 8
+    offset = (page - 1) * per_page
+    if not pesquisa:
+        cursor.execute("SELECT COUNT(*) AS total FROM clientes WHERE usuario_id = ?", (USER,))
+        total_query = cursor.fetchone()
+        total_pages = total_query['total']
+        cursor.execute("SELECT id, nome, cpf_cnpj FROM clientes WHERE usuario_id = ? LIMIT ? OFFSET ?",(USER, per_page, offset))
+    else:
+        cursor.execute("SELECT COUNT(*) AS total FROM clientes WHERE usuario_id = ? AND nome LIKE ?",(USER, "%"+pesquisa+"%"))
+        total_query = cursor.fetchone()
+        total_pages = total_query["total"]
+        cursor.execute("SELECT id, nome, cpf_cnpj FROM clientes WHERE usuario_id = ? AND nome LIKE ? LIMIT ? OFFSET ?",(USER, "%"+pesquisa+"%", per_page, offset))
+    clientes = cursor.fetchall()
+    total_pages = math.ceil((total_pages / per_page))
+    closedb(db)
+    return render_template("clientes.html", clientes=clientes, page=page, total_pages=total_pages, pesquisa=pesquisa)
+
+
 
 @app.route("/cadastrar_clientes", methods = ["GET", "POST"])
 def cadClientes():
@@ -150,7 +171,7 @@ def editar_chamado():
         if saida:
             saida = datetime.strptime(saida, "%Y-%m-%dT%H:%M")
             saida = saida.strftime("%d/%m/%Y %H:%M")
-        cursor.execute("UPDATE chamados SET cliente_id = ?, status = ?, defeitos = ?, emissao = ?, encerramento = ?, descricao = ?, solucao = ? WHERE usuario_id = ?", (cliente, situacao, defeitos, entrada, saida, descricao, solucao, USER))
+        cursor.execute("UPDATE chamados SET cliente_id = ?, status = ?, defeitos = ?, emissao = ?, encerramento = ?, descricao = ?, solucao = ? WHERE id = ? and usuario_id = ?", (cliente, situacao, defeitos, entrada, saida, descricao, solucao, id_chamado, USER))
         db.commit()
         return redirect("/")
     chamado_id = request.args.get("chamado")
@@ -169,6 +190,9 @@ def editar_chamado():
     closedb(db)
     return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes, entrada=entrada, saida=saida, action=action)
 
+@app.route("/editar_cliente", methods = ["GET", "POST"])
+def editar_cliente():
+    return render_template("cadastrar_cliente.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
