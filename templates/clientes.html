@@ -36,7 +36,7 @@
                             <td>{{ cliente["id"] }}</td>
                             <td>{{ cliente["nome"] }}</td>
                             <td>{{ cliente["cpf_cnpj"] }}</td>
-                            <td class="btn_editar"><a href="cadastrar_cliente.html"><img src="../static/img/icon/editar.svg">Editar</a></td>
+                            <td class="btn_editar"><a href="/editar_cliente?cliente={{ cliente['id']}}"><img src="../static/img/icon/editar.svg">Editar</a></td>
                         </tr>
                     {% endfor %}    
                 {% endif %}

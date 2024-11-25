@@ -117,11 +117,12 @@ def cadClientes():
                 return redirect("/cadastrar_clientes")
         db = opendb()
         cursor = db.cursor()
+        action = 'criar_cliente'
         cursor.execute("INSERT INTO clientes (nome, usuario_id, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(nome, USER, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
         db.commit()
         closedb(db)
         return redirect("/clientes")
-    return render_template("cadastrar_clientes.html")
+    return render_template("cadastrar_clientes.html", action=action)
 
 @app.route("/cadastrar_chamados", methods = ["POST", "GET"])
 def cadChamados():
@@ -168,12 +169,16 @@ def editar_chamado():
         solucao = request.form.get("solucao")
         entrada = datetime.strptime(entrada, "%Y-%m-%dT%H:%M")
         entrada = entrada.strftime("%d/%m/%Y %H:%M")
+        checkElements = [entrada, cliente, situacao, descricao, defeitos]
+        for element in checkElements:
+            if not element:
+                return redirect("/editar_chamado")
         if saida:
             saida = datetime.strptime(saida, "%Y-%m-%dT%H:%M")
             saida = saida.strftime("%d/%m/%Y %H:%M")
         cursor.execute("UPDATE chamados SET cliente_id = ?, status = ?, defeitos = ?, emissao = ?, encerramento = ?, descricao = ?, solucao = ? WHERE id = ? and usuario_id = ?", (cliente, situacao, defeitos, entrada, saida, descricao, solucao, id_chamado, USER))
         db.commit()
-        return redirect("/")
+        return redirect("/chamados")
     chamado_id = request.args.get("chamado")
     cursor.execute("SELECT chamados.*, clientes.nome AS nome_cliente, clientes.id AS id_cliente FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.id = ? AND chamados.usuario_id = ?", (chamado_id, USER))
     chamado = cursor.fetchone()
@@ -190,9 +195,34 @@ def editar_chamado():
     closedb(db)
     return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes, entrada=entrada, saida=saida, action=action)
 
-@app.route("/editar_cliente", methods = ["GET", "POST"])
+@app.route("/editar_cliente", methods=["GET", "POST"])
 def editar_cliente():
-    return render_template("cadastrar_cliente.html")
+    db = opendb()
+    cursor = db.cursor()
+    if request.method == "POST":
+        id_cliente = request.form.get("cod")
+        cpf_cnpj = request.form.get("registro")
+        nome = request.form.get("nome")
+        telefone = request.form.get("telefone")
+        logradouro = request.form.get("logradouro")
+        numero = request.form.get("numero")
+        bairro = request.form.get("bairro")
+        complemento = request.form.get("complemento")
+        cidade = request.form.get("cidade")
+        uf = request.form.get("uf")
+        cep = request.form.get("cep")
+        checkElements = [cpf_cnpj, nome, telefone, logradouro, bairro, cidade, uf,]
+        for element in checkElements:
+            if not element:
+                return redirect("/editar_cliente")
+        cursor.execute("UPDATE clientes SET nome = ?, cpf_cnpj = ?, telefone = ?, logradouro = ?, bairro = ?, numero = ?, complemento = ?, cidade = ?, uf = ?, cep = ? WHERE id = ? AND usuario_id = ? ", (nome, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep, id_cliente, USER))
+        db.commit()
+        return redirect("/clientes")
+    cliente_id = request.args.get("cliente")
+    action = "atualizar_cliente"
+    cursor.execute("SELECT * FROM clientes WHERE id = ? AND usuario_id = ? ", (cliente_id,USER))
+    cliente = cursor.fetchone()
+    return render_template("cadastrar_clientes.html",cliente=cliente, action=action)
 
 if __name__ == "__main__":
     app.run(debug=True)
