@@ -4,12 +4,12 @@
     <section class="conteudo_header pesquisar_container">
         <div class="campo_pesquisa">
             <div>
-                <a class="btn_adicionar" href="/cadastrar_chamados">+ Adicionar</a>
+                <a class="btn_adicionar btn_verde" href="/cadastrar_chamados">+ Adicionar</a>
             </div>
             <div>
                 <form action="/chamados" method="get" class="formulario_pesquisar">
                     <input type="text" id="pesquisar_chamado" name="pesquisa" placeholder="Pesquisar">
-                    <button><img src="../static/img/icon/pesquisar.svg"></button>
+                    <button class="btn_verde"><img src="../static/img/icon/pesquisar.svg"></button>
                 </form>
             </div>
         </div>
@@ -21,12 +21,12 @@
         <table class="tabela">
             <thead>
                 <tr >
-                    <th>Cod</th>
-                    <th>Cliente</th>
-                    <th>Descrição</th>
-                    <th>Status</th>
-                    <th>Abertura</th>
-                    <th>Editar</th>
+                    <th style="width: 5%;">Cod</th>
+                    <th style="width: 25%;">Cliente</th>
+                    <th style="width: 30%">Descrição</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 15%;">Abertura</th>
+                    <th style="width: 10%;">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,7 +54,7 @@
                 {% for page in range(total_pages) %}
                     <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{{ page + 1 }}">{{ page + 1 }}</a></li>
                 {% endfor %}
-                <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{% if (page + 1) <= total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
+                <li><a href="{% if pesquisa %}/chamados?pesquisa={{pesquisa}}&pagina={% else %}/chamados?pagina={% endif %}{% if (page + 1) == total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
             </ul>
         </div>
     </div>

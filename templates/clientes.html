@@ -3,12 +3,12 @@
     <section class="conteudo_header pesquisar_container"> 
         <div class="campo_pesquisa">
             <div>
-                <a class="btn_adicionar" href="/cadastrar_clientes">+ Adicionar</a>
+                <a class="btn_adicionar btn_verde" href="/cadastrar_clientes">+ Adicionar</a>
             </div>
             <div>
                 <form action="/clientes" method="get" class="formulario_pesquisar">
                     <input type="text" id="pesquisar_cliente" name="pesquisa" placeholder="Pesquisar">
-                    <button><img src="../static/img/icon/pesquisar.svg"></button>
+                    <button class="btn_verde"><img src="../static/img/icon/pesquisar.svg"></button>
                 </form>
             </div>
         </div>    
@@ -48,7 +48,7 @@
                 {% for page in range(total_pages) %}
                     <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{{ page + 1 }}">{{ page + 1 }}</a></li>
                 {% endfor %}
-                <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{% if (page + 1) <= total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
+                <li><a href="{% if pesquisa %}/clientes?pesquisa={{pesquisa}}&pagina={% else %}/clientes?pagina={% endif %}{% if (page + 1) == total_pages %}{{ page + 1 }}{% else %}{{total_pages}}{% endif %}" class="proximo">Próximo</a></li>
             </ul>
         </div>
     </div>

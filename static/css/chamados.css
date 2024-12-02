@@ -74,6 +74,14 @@
     border: 2px solid var(--cinzaBorda);
 }
 
+.btn_verde {
+    transition: .3s;
+}
+
+.btn_verde:hover {
+    background-color: var(--verde-escuro);
+}
+
 .nav_tabela_content {
     display: flex;
     justify-content: end;
@@ -92,5 +100,7 @@
 .full_row {
     text-align: center;
 }
+
+
 
 
