@@ -23,26 +23,33 @@
 .btn_editar a {
     display: flex;
     gap: 5px;
+    font-size: .95rem;
     width: max-content;
     background: var(--azul);
     color: var(--branco);
     padding: 5px 10px;
     border-radius: 4px;
+    transition: .3s;
+}
+
+.btn_editar a:hover {
+    background-color: var(--azul-hover);
 }
 
 .pesquisar_container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: end;
+    width: 100%;
+    align-content: end;
+    margin-bottom: 5px;
 }
 
 .campo_pesquisa {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    max-width: 1100px;
     margin-bottom: 10px;
     align-items: end;
+    margin: 0 auto;
+    padding: 0 15px;
 
 }
 
@@ -55,13 +62,23 @@
     font-size: 1rem;
     padding: 5px 12px;
     border-radius: 4px;
-    border: 2px solid var(--cinzaBorda);
+    border: 1px solid var(--cinzaBorda);
+}
+.campo_pesquisa input {
+    outline:none
+}
+.campo_pesquisa input:focus {
+    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.2);
 }
 .campo_pesquisa button {
     background: var(--verde);
     padding: 10px;
     border-radius: 4px;
-    border: 2px solid var(--cinzaBorda);
+    border: 1px solid var(--cinzaBorda);
+}
+
+.padrao {
+    max-width: 1100px;
 }
 
 .btn_adicionar {
@@ -71,7 +88,15 @@
     background: var(--verde);
     padding: 8px 12px;
     border-radius: 4px;
-    border: 2px solid var(--cinzaBorda);
+    border: 1px solid var(--cinzaBorda);
+}
+
+.btn_verde {
+    transition: .3s;
+}
+
+.btn_verde:hover {
+    background-color: var(--verde-escuro);
 }
 
 .nav_tabela_content {
@@ -92,5 +117,7 @@
 .full_row {
     text-align: center;
 }
+
+
 
 

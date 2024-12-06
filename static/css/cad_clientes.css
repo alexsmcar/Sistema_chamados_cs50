@@ -1,0 +1,9 @@
+.cadastrar_cliente_content,
+.cadastrar_chamado_content {
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    padding: 30px 40px;
+    border-radius: 4px;
+}
+
+
+
