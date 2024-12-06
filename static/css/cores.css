@@ -1,12 +1,14 @@
 :root {
-    --azul: #1770FF;
+    --azul: #137cf7;
+    --azul-hover:#0a5dd1;
     --azulClaro: #D1E6FF;
+    --azulClaroFocus: #99c6fd;
     --branco: #ffffff;
-    --pretoSidebar: #0D0E12;
+    --preto: #000000;
     --cinzaFooter : #DBDFE9;
     --verde: #17C653;
     --verde-escuro: #139f44;
     --amarelo: #F6C000;
     --vermelho: #F8285A;
-    --cinzaBorda: #B2B2B2;
+    --cinzaBorda: #c2cad8;
 }

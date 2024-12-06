@@ -20,6 +20,8 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+
 SITUACOES = ["aberto", "em andamento", "finalizado"]
 
 def opendb():
@@ -30,6 +32,19 @@ def opendb():
 def closedb(connection, cursor):
     cursor.close()
     connection.close()
+
+@app.context_processor
+def inject_user_email():
+    db = opendb()
+    cursor = db.cursor()
+    user_id = session.get("user_id")
+    if user_id:
+        cursor.execute("SELECT email FROM usuarios WHERE id = ?", (user_id,))
+        user_email = cursor.fetchone()
+        return {
+            "user_email" : user_email["email"]
+        }
+    return {}
 
 @app.route("/")
 @login_required
@@ -98,10 +113,10 @@ def chamados():
         cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? LIMIT ? OFFSET ?", (session["user_id"], per_page, offset))
 
     else:
-        cursor.execute("SELECT COUNT(*) as total FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND clientes.nome LIKE ?", (session["user_id"], "%"+pesquisa+"%"))
+        cursor.execute("SELECT COUNT(*) as total FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND (clientes.nome LIKE ? or clientes.id = ?)", (session["user_id"], "%"+pesquisa+"%", pesquisa))
         total_query = cursor.fetchone()
         total_pages = total_query["total"]
-        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND (clientes.nome LIKE ? OR clientes.id = ?) LIMIT ? OFFSET ?", (session["user_id"], "%"+pesquisa+"%",int(pesquisa), per_page, offset))
+        cursor.execute("SELECT chamados.id, clientes.nome, descricao, status, emissao FROM chamados JOIN clientes ON chamados.cliente_id = clientes.id WHERE chamados.usuario_id = ? AND (clientes.nome LIKE ? OR clientes.id = ?) LIMIT ? OFFSET ?", (session["user_id"], "%"+pesquisa+"%",pesquisa, per_page, offset))
 
     chamados = cursor.fetchall()
     total_pages = math.ceil((total_pages / per_page))
@@ -126,10 +141,10 @@ def clientes():
         total_pages = total_query['total']
         cursor.execute("SELECT id, nome, cpf_cnpj FROM clientes WHERE usuario_id = ? LIMIT ? OFFSET ?",(session["user_id"], per_page, offset))
     else:
-        cursor.execute("SELECT COUNT(*) AS total FROM clientes WHERE usuario_id = ? AND nome LIKE ?",(session["user_id"], "%"+pesquisa+"%"))
+        cursor.execute("SELECT COUNT(*) AS total FROM clientes WHERE usuario_id = ? AND (nome LIKE ? or id = ?)",(session["user_id"], "%"+pesquisa+"%", pesquisa))
         total_query = cursor.fetchone()
         total_pages = total_query["total"]
-        cursor.execute("SELECT id, nome, cpf_cnpj FROM clientes WHERE usuario_id = ? AND (nome LIKE ? or id = ?) LIMIT ? OFFSET ?",(session["user_id"], "%"+pesquisa+"%", int(pesquisa), per_page, offset))
+        cursor.execute("SELECT id, nome, cpf_cnpj FROM clientes WHERE usuario_id = ? AND (nome LIKE ? or id = ?) LIMIT ? OFFSET ?",(session["user_id"], "%"+pesquisa+"%", pesquisa, per_page, offset))
     clientes = cursor.fetchall()
     total_pages = math.ceil((total_pages / per_page))
     if total_pages < 1:
@@ -192,7 +207,7 @@ def cadChamados():
         db.commit()
         return redirect("/chamados")
     action = "criar_chamado"
-    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (session["user_id"],))
+    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ? ORDER BY nome", (session["user_id"],))
     clientes = cursor.fetchall()
     closedb(db, cursor)
     return render_template("cadastrar_chamados.html", clientes=clientes, situacoes=SITUACOES, action=action)
@@ -234,7 +249,7 @@ def editar_chamado():
         saida = datetime.strptime(chamado["encerramento"], "%d/%m/%Y %H:%M")
         saida = saida.strftime("%Y-%m-%dT%H:%M")
     action = "atualizar_chamado"
-    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ?", (session["user_id"],))
+    cursor.execute("SELECT id, nome FROM clientes WHERE usuario_id = ? ORDER BY nome", (session["user_id"],))
     clientes = cursor.fetchall()
     closedb(db, cursor)
     return render_template("cadastrar_chamados.html", chamado=chamado, situacoes=SITUACOES, clientes=clientes, entrada=entrada, saida=saida, action=action)

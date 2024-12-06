@@ -1,0 +1,9 @@
+.btn_logout {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn_logout img {
+    transform: rotate(180deg);
+}

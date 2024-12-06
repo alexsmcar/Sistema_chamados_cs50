@@ -12,7 +12,13 @@
 <body>
     <div class="dashboard_container">
         <header class="cabecalho">
-            <div class="logo_container"></div>
+            <div class="logo_container">
+                <button class="btn_ocultar_header">Ocultar Menu<img src="../static/img/icon/arrow.svg"></button>
+                <div class="logo">
+                    <img src="../static/img/logotipo.png">
+                    <span>WaveTech Sistemas</span>
+                </div>
+            </div>
             <nav class="navegacao_principal">
                 <ul class="nav_links">
                     <li><a href="/"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
@@ -24,8 +30,23 @@
 
         </header>
         <main>
-            {% block header %}
-            {% endblock %}
+            <section class="conteudo_header">
+                <div class="header_informacoes_container">
+                    <div class="header_informacoes {% block class_header %}{% endblock %}">
+                        <h1>{% block title_header %}{% endblock %}</h1>
+                        <div>
+                            <button class="btn_logout">{{ user_email }}<img src="../static/img/icon/seta-abrir.svg"></button>
+                            <div class="layout_sair">
+                                <a href="/logout">Sair</a>
+                            </div>
+                        </div>
+                        
+                    </div>      
+                </div>
+                {% block header %}
+                {% endblock %}
+            </section>
+            
             <section class="conteudo_principal">
                 {% block principal %}
                 {% endblock %}
@@ -33,9 +54,9 @@
 
         </main>
         <footer class="footer">
-            <p>2024© Alexsandro Carvalho</p>
+            <p>2024© WaveTech Sistemas</p>
         </footer>
     </div>
-    
+    <script type="module" src="../static/js/script.js"></script>
 </body>
 </html>

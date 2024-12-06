@@ -1,28 +1,37 @@
 {% extends "layout.html" %}
+
+{% block class_header %}
+  padrao
+{% endblock %}
+
+{% block title_header %}
+    Clientes
+{% endblock %}
+
 {% block header %}
-    <section class="conteudo_header pesquisar_container"> 
+    <div class="pesquisar_container"> 
         <div class="campo_pesquisa">
             <div>
                 <a class="btn_adicionar btn_verde" href="/cadastrar_clientes">+ Adicionar</a>
             </div>
             <div>
                 <form action="/clientes" method="get" class="formulario_pesquisar">
-                    <input type="text" id="pesquisar_cliente" name="pesquisa" placeholder="Pesquisar">
+                    <input type="search" autocomplete="off" id="pesquisar_cliente" name="pesquisa" placeholder="Pesquisar...">
                     <button class="btn_verde"><img src="../static/img/icon/pesquisar.svg"></button>
                 </form>
             </div>
         </div>    
-    </section>
+    </div>
 {% endblock %}
 {% block principal %}
     <div class="tabela_content">
         <table class="tabela">
             <thead>
                 <tr >
-                    <th>Cod</th>
-                    <th>Cliente</th>
-                    <th>CPF/CNPJ</th>
-                    <th>Editar</th>
+                    <th style="width: 5%;">Cod</th>
+                    <th style="width: 45%;">Cliente</th>
+                    <th style="width: 40%;">CPF/CNPJ</th>
+                    <th style="width: 10%;">Editar</th>
                 </tr>
             </thead>
             <tbody>
