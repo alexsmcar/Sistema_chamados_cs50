@@ -1,0 +1,129 @@
+.cabecalho {
+    width: 250px;
+    height: 100%;
+    background-color: var(--preto);
+    grid-row: span 2;
+    transition: .3s;
+}
+
+.cabecalho.hidden {
+    width: 50px;
+}
+
+.navegacao_principal {
+    color: var(--branco);
+    margin: 0 auto;
+}
+
+
+.logo_container {
+    display: grid;
+    height: 150px;
+    padding: 10px 10px 5px 10px;
+    box-sizing: border-box;
+}
+
+.cabecalho.hidden .logo_container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.nav_links {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: max-content;
+    margin: 50px auto;
+}
+
+.nav_links li span {
+    transition: .3s;
+}
+.cabecalho.hidden .nav_links li span {
+    width: 0px;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.nav_links li a {
+    display: flex;
+    gap: 15px;
+    padding: 5px 12px;
+    align-items: center;
+}
+
+.cabecalho.hidden .nav_links a {
+    gap: 0px;
+}
+
+.nav_links li {
+    width: max-content;
+}
+
+.btn_ocultar_header {
+    height: max-content; 
+}
+
+.btn_ocultar_header::before {
+    content: '';
+    display: block;
+    background-image: url(../img/icon/arrow.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--branco);
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.btn_ocultar_header:hover::before {
+    border-color: var(--azul);
+    background-image: url(../img/icon/arrow-hover.svg);
+}
+.cabecalho.hidden .btn_ocultar_header::before {
+    transform: rotate(180deg);
+}
+
+.ocultar_header_container {
+    height: max-content;
+    display: flex;
+    justify-content: end;
+}
+
+.cabecalho.hidden .ocultar_header_container {
+    justify-content: center;
+}
+
+.cabecalho.hidden .logo {
+    width: 50px;
+}
+.logo {
+    justify-items: center;
+    align-self: end;
+}
+
+.logo img {
+    max-width: 70px;
+    margin-bottom: 3px;
+    transition: .3s;
+}
+
+.cabecalho.hidden .logo img {
+    max-width: 50px;;
+}
+
+.logo span {
+    color: var(--branco);
+    display: block;
+    font-size: .85rem;
+    transition: .3s;
+}
+
+.cabecalho.hidden .logo span {
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    width: 0px;
+}

@@ -1,3 +1,6 @@
+.logout_container {
+    position: relative;
+}
 .btn_logout {
     display: flex;
     align-items: center;
@@ -5,5 +8,32 @@
 }
 
 .btn_logout img {
+    transition: .2s;
+}
+.btn_logout[aria-expanded="true"] img {
     transform: rotate(180deg);
 }
+
+.logout {
+    display: none;
+    position: absolute;
+    font-size: .85rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 10px;
+    z-index: 1;
+}
+
+.logout.active {
+    display: flex;
+    justify-content: end;
+}
+
+.logout a {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid var(--cinzaBorda);
+}
+

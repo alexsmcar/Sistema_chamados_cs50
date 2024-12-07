@@ -21,8 +21,7 @@ def login_required(f):
     return decorated_function
 
 
-
-SITUACOES = ["aberto", "em andamento", "finalizado"]
+SITUACOES = ["aberto", "em andamento", "finalizado", "cancelado"]
 
 def opendb():
     connection = sqlite3.connect("sistema_chamados.db")
@@ -51,7 +50,7 @@ def inject_user_email():
 def index():
     db = opendb()
     cursor = db.cursor()
-    cursor.execute("SELECT COUNT(status) AS total, COUNT(CASE WHEN status = 'aberto' THEN 1 END) AS aberto, COUNT(CASE WHEN status = 'em andamento' THEN 1 END) AS em_andamento, COUNT(CASE WHEN status = 'finalizado' THEN 1 END) AS finalizado FROM chamados WHERE usuario_id = ?", (session["user_id"],))
+    cursor.execute("SELECT COUNT(status) AS total, COUNT(CASE WHEN status = 'aberto' THEN 1 END) AS aberto, COUNT(CASE WHEN status = 'em andamento' THEN 1 END) AS em_andamento, COUNT(CASE WHEN status = 'finalizado' THEN 1 END) AS finalizado FROM chamados WHERE usuario_id = ? AND status != 'cancelado'", (session["user_id"],))
     dashboard = cursor.fetchone()
     closedb(db, cursor)
     return render_template("dashboard.html", dashboard=dashboard)
