@@ -2,9 +2,9 @@
     max-width: 1100px;
     margin: 0 auto;
 }
+
 .tabela {
     width: 100%;
-    grid-column: span 2;
     background: #F7F7F7;
     text-align: left;
     border-radius: 10px;
@@ -50,7 +50,12 @@
     align-items: end;
     margin: 0 auto;
     padding: 0 15px;
+}
 
+.nav_hidden .campo_pesquisa,
+.nav_hidden .padrao,
+.nav_hidden .tabela_content {
+    max-width: 1300px;
 }
 
 .formulario_pesquisar {
@@ -117,6 +122,7 @@
 .full_row {
     text-align: center;
 }
+
 
 
 

@@ -32,6 +32,14 @@
     outline: 1px solid var(--azulClaroFocus);
 }
 
+.form_cad .campo_invalido {
+    border-color: var(--vermelhoBorda) ;
+}
+.form_cad .campo_invalido:focus {
+    border-color: var(--azulClaroFocus);
+
+}
+
 
 .form_cad {
     display: grid;

@@ -13,7 +13,9 @@
     <div class="dashboard_container">
         <header class="cabecalho">
             <div class="logo_container">
-                <button class="btn_ocultar_header">Ocultar Menu<img src="../static/img/icon/arrow.svg"></button>
+                <div class="ocultar_header_container">
+                    <button class="btn_ocultar_header" id="btn_ocultar"></button>
+                </div>
                 <div class="logo">
                     <img src="../static/img/logotipo.png">
                     <span>WaveTech Sistemas</span>
@@ -21,10 +23,24 @@
             </div>
             <nav class="navegacao_principal">
                 <ul class="nav_links">
-                    <li><a href="/"><img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">Dashboard</a></li>
-                    <li><a href="/chamados"><img src="../static/img/icon/chamado.svg" width="20px" height="20px">Chamados</a></li>
-                    <li><a href="/clientes"><img src="../static/img/icon/clientes.svg" width="20px" height="20px">Clientes</a></li>
-                    <li><a href="/logout">sair</a></li>
+                    <li>
+                        <a href="/">
+                            <img src="../static/img/icon/dashboard-cropped.svg" width="20px" height="20px">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/chamados">
+                            <img src="../static/img/icon/chamado.svg" width="20px" height="20px">
+                            <span>Chamados</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/clientes">
+                            <img src="../static/img/icon/clientes.svg" width="20px" height="20px">
+                            <span>Clientes</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
@@ -34,13 +50,12 @@
                 <div class="header_informacoes_container">
                     <div class="header_informacoes {% block class_header %}{% endblock %}">
                         <h1>{% block title_header %}{% endblock %}</h1>
-                        <div>
-                            <button class="btn_logout">{{ user_email }}<img src="../static/img/icon/seta-abrir.svg"></button>
-                            <div class="layout_sair">
+                        <div class="logout_container">
+                            <button class="btn_logout" aria-expanded="false" aria-controls="logout">{{ user_email }}<img src="../static/img/icon/seta_abrir.svg"></button>
+                            <div class="logout" id="logout">
                                 <a href="/logout">Sair</a>
                             </div>
                         </div>
-                        
                     </div>      
                 </div>
                 {% block header %}

@@ -17,10 +17,10 @@
         <main class="page_container">
             <div class="login_page">
                 <h1 class="login_titulo">Cadastre-se</h1>
-                <form class="formulario_login" method="post" action="/cadastrar">
+                <form autocomplete="off" id="form_cadastro" class="formulario_login" method="post" action="/cadastrar">
                     <div>
                         <label class="label_login" for="cad_email">Email</label>
-                        <input class="input_login" type="text" id="cad_email" name="email" placeholder="exemplo@dominio.com
+                        <input class="input_login" type="text" id="cad_email" name="email" placeholder="exemplo@gmail.com
                         ">
                     </div>
                     <div>
@@ -36,9 +36,17 @@
                     <button class="btn_login">Cadastrar</button>
                 </form>
                 <p>Já possui conta? <a class="login_register" href="/">Fazer login</a></p>
+                <span id="mensagem_erro" class="mensagem_servidor">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {{messages[0]}}    
+                    {% endif %}
+                {% endwith %}
+                </span>
+                
             </div>
         </main>
     </div>
-    
+    <script type="module" src="../static/js/script.js"></script>
 </body>
 </html>
