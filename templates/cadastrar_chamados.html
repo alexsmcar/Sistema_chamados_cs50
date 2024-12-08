@@ -11,7 +11,7 @@
 {% block principal %}
     <div class="cadastrar_chamado_content">
         <form id="formulario_cad" action="{% if action == 'criar_chamado' %}/cadastrar_chamados{% else %}/editar_chamado{% endif %}
-        " method="post" class="form_cad_chamado">
+        " method="post" class="form_cad_chamado" autocomplete="off">
             <input type="hidden" name="action" value="{{ action }}">
             <div class="form_cad">
                 <div class="sub_col2">

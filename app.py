@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 import math
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -67,6 +67,7 @@ def login():
             cursor.execute("SELECT id, password FROM usuarios WHERE email = ?",(email,))
             usuario = cursor.fetchone()
             if not usuario or not check_password_hash(usuario["password"], senha):
+                flash("Usuario ou senha incorretos!")
                 return redirect("/login") #usuario ou senha incorreta
             else:
                 session["user_id"] = usuario["id"]
@@ -87,11 +88,16 @@ def cadastrar():
             return redirect("/cadastrar")
         cursor.execute("SELECT email FROM usuarios WHERE email = ?",(email,))
         email_db = cursor.fetchall()
-        if not email_db and senha == confirmar:
-            senha = generate_password_hash(senha)
-            cursor.execute("INSERT INTO usuarios (email, password) values(?,?)", (email, senha))
-            db.commit()
-            return redirect("/login") # retorna pagina de login
+        if email_db:
+            flash("Email não disponivel!")
+            return redirect("/cadastrar")
+        if senha != confirmar:
+            flash("Senhas não são iguais!")
+            return redirect("/cadastrar")
+        senha = generate_password_hash(senha)
+        cursor.execute("INSERT INTO usuarios (email, password) values(?,?)", (email, senha))
+        db.commit()
+        return redirect("/login") # retorna pagina de login
     closedb(db, cursor)
     return render_template("cadastrar.html")
 
@@ -173,7 +179,10 @@ def cadClientes():
                 return redirect("/cadastrar_clientes")
         db = opendb()
         cursor = db.cursor()
-        cursor.execute("INSERT INTO clientes (nome, usuario_id, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(nome, session["user_id"], cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
+        cursor.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM clientes WHERE usuario_id = ?", (session["user_id"],))
+        id = cursor.fetchone()
+        id = id[0]
+        cursor.execute("INSERT INTO clientes (id, nome, usuario_id, cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(id, nome, session["user_id"], cpf_cnpj, telefone, logradouro, bairro, numero, complemento, cidade, uf, cep))
         db.commit()
         closedb(db, cursor)
         return redirect("/clientes")
@@ -202,7 +211,10 @@ def cadChamados():
         if saida:
             saida = datetime.strptime(saida, "%Y-%m-%dT%H:%M")
             saida = saida.strftime("%d/%m/%Y %H:%M")
-        cursor.execute("INSERT INTO chamados (usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?)", (session["user_id"], cliente, situacao, defeitos, entrada, saida, descricao, solucao))
+        cursor.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM chamados WHERE usuario_id = ?", (session["user_id"],))
+        id = cursor.fetchone()
+        id = id[0]
+        cursor.execute("INSERT INTO chamados (id, usuario_id, cliente_id, status, defeitos, emissao, encerramento, descricao, solucao) VALUES (?,?,?,?,?,?,?,?,?)", (id, session["user_id"], cliente, situacao, defeitos, entrada, saida, descricao, solucao))
         db.commit()
         return redirect("/chamados")
     action = "criar_chamado"

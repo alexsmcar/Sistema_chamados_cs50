@@ -5,15 +5,17 @@ export default function check_forms() {
     const form_clientes = document.getElementById("formulario_clientes");
     if (form_chamados) {
         if (path === href) {
-            console.log("ts")
+            const dataAtual = new Date();
+            const dataFormat = dataAtual.toLocaleString('sv-SE', { timeZoneName: 'short' }).slice(0, 16);
+            console.log(dataFormat);
+            form_chamados["entrada"].value = dataFormat;
         }
 
         function validadeChamados(event) {
-            const entrada = this["entrada"];
             const cliente = this["cliente"];
             const descricao = this["descricao"];
             const defeitos = this["defeitos"];
-            const isValid = validarCampos("campo_invalido", entrada,cliente,descricao,defeitos);
+            const isValid = validarCampos("campo_invalido", cliente,descricao,defeitos);
             console.log(isValid);
             if (!isValid) {
                event.preventDefault();
@@ -45,7 +47,7 @@ export default function check_forms() {
     function validarCampos(classe, ...itens) {
         let isValid = true;
         itens.forEach((item => {
-            if (item.value.trim() === "") {
+            if (item.value.trim() === "" || (item.tagName === "SELECT" && item.value === "Selecione")) {
                 item.classList.add(classe);
                 isValid = false;
             }

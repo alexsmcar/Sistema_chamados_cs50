@@ -17,10 +17,10 @@
         <main class="page_container">
             <div class="login_page">
                 <h1 class="login_titulo">Entrar</h1>
-                <form action="/login" method="post" class="formulario_login">
+                <form autocomplete="off" action="/login" method="post" class="formulario_login">
                     <div>
                         <label class="label_login" for="log_email">Email</label>
-                        <input class="input_login" type="text" id="log_email" name="email" placeholder="exemplo@dominio.com
+                        <input class="input_login" type="text" id="log_email" name="email" placeholder="exemplo@gmail.com
                         ">
                     </div>
                     <div>
@@ -31,9 +31,14 @@
                     <button type="submit" class="btn_login">Entrar</button>
                 </form>
                 <p>Ainda não possui conta? <a class="login_register" href="/cadastrar">Cadastre-se</a></p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <span class="mensagem_servidor">{{messages[0]}}</span>
+                    {% endif %}
+                {% endwith %}
             </div>
         </main>
     </div>
-    
+    <script type="module" src="../static/js/script.js"></script>
 </body>
 </html>
