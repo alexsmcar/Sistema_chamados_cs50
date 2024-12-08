@@ -10,7 +10,7 @@
 
 {% block principal %}
     <div class="cadastrar_chamado_content">
-        <form action="{% if action == 'criar_chamado' %}/cadastrar_chamados{% else %}/editar_chamado{% endif %}
+        <form id="formulario_cad" action="{% if action == 'criar_chamado' %}/cadastrar_chamados{% else %}/editar_chamado{% endif %}
         " method="post" class="form_cad_chamado">
             <input type="hidden" name="action" value="{{ action }}">
             <div class="form_cad">
